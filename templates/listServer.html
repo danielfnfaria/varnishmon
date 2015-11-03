@@ -1,0 +1,42 @@
+{% extends "header.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row" style="margin: 0 auto">
+    <div class="panel panel-default" style="width:700px">
+      <div class="panel-heading">
+        <div class="panel-title">List Servers</div>
+      </div>
+      <div class="panel-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Server Name</th>
+              <th>IP Address</th>
+              <th>Port</th>
+              <th>Password</th>
+              <th>Group</td>
+              <th colspan="2">Actions</th>
+            </tr>
+          </thead>
+          {% for server in servers %}
+          <tr>
+            <td>{{ server[0] }}</td>
+            <td>{{ server[1] }}</td>
+            <td>{{ server[2] }}</td>
+            <td>{{ server[3] }}</td>
+            <td>{{ server[4] }}</td>
+            <td>{{ server[5] }}</td>
+            <td><span class="glyphicon glyphicon-cog"></span></td>
+            <td><span class="glyphicon glyphicon-remove"></span></td>
+          </tr>
+          {% endfor %}
+      </div>
+    </form>
+  </div>
+</div>
+
+
+{% endblock %}

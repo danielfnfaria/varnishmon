@@ -1,0 +1,34 @@
+{% extends "header.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row" style="margin: 0 auto">
+    <div class="panel panel-default" style="width:500px">
+      <div class="panel-heading">
+        <div class="panel-title">Add Varnish Group</div>
+      </div>
+      <div class="panel-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Group Name</th>
+              <th colspan="2">Actions</th>
+            </tr>
+          </thead>
+          {% for group in groups %}
+          <tr>
+            <td>{{ group[0] }}</td>
+            <td>{{ group[1] }}</td>
+            <td><span class="glyphicon glyphicon-cog"></span></td>
+            <td><span class="glyphicon glyphicon-remove"></span></td>
+          </tr>
+          {% endfor %}
+      </div>
+    </form>
+  </div>
+</div>
+
+
+{% endblock %}

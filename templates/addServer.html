@@ -1,0 +1,38 @@
+{% extends "header.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row" style="margin: 0 auto">
+    <div class="panel panel-default" style="width:500px">
+      <div class="panel-heading">
+        <div class="panel-title">Add Varnish Server</div>
+      </div>
+      <div class="panel-body">
+        <form action="add_server" method="POST">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input id="name" class="form-control" type="text" name="name">
+            <label for="ip">IP</label>
+            <input id="ip" class="form-control" type="text" name="ip">
+            <label for="port">Port</label>
+            <input id="port" class="form-control" type="text" name="port">
+            <label for="password">Password</label>
+            <input id="password" class="form-control" type="text" name="password">
+            <label for"group">Group</label>
+            <select class="form-control" id="group" name="group">
+            {% for group in groups %}
+              <option value="{{ group[0] }}">{{ group[1] }}</option>
+            {% endfor %}
+            </select>
+          </div>
+          <br>
+          <button type="submit" class="btn">Register</button>
+        </form>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+{% endblock %}
