@@ -6,6 +6,7 @@ from lib.varnish import Varnish
 from lib.core import Core
 from time import time
 import json
+import time
 
 def create_app():
   app = Flask(__name__)
@@ -97,7 +98,8 @@ def create_app():
   @app.route('/live/hit/<group_id>')
   def hit(group_id):
     response = core.listServer(group_id)
-    v = varnish.only_hit_or_miss('hit', servers=response)
+    v =  varnish.only_hit_or_miss('hit', servers=response)
+
     return makeResponse(v)
 
   @app.route('/live/miss/<group_id>')

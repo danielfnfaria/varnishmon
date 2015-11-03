@@ -1,8 +1,7 @@
-from time import time
+from time import time, sleep
 from collections import OrderedDict
 import urllib2
 import json
-
 
 class Varnish:
 
@@ -15,40 +14,70 @@ class Varnish:
 
   def hit(self, servers):
 
-    _sum_hit = []
-    _sum_miss = []
+    hit_first = []
+    hit_current = []
 
     for server in servers:
-      stats = self.connect('stats', 'varnish', str(server[4]), str(server[2]), str(server[3]))
-      parse = json.loads(stats)
-      _sum_hit.append(parse['MAIN.cache_hit']['value'])
+      stats_first = self.connect('stats', 'varnish', str(server[4]), str(server[2]), str(server[3]))
+      parse_first = json.loads(stats_first)
+      hit_first.append(parse_first['MAIN.cache_hit']['value'])
+
+      sleep(1)
     
-    return sum(_sum_hit)
+      stats_current = self.connect('stats', 'varnish', str(server[4]), str(server[2]), str(server[3]))
+      parse_current = json.loads(stats_current)
+      hit_current.append(parse_current['MAIN.cache_hit']['value'])
+    
+    _sum_hit = sum(hit_current) - sum(hit_first)
+
+    return _sum_hit
 
   def miss(self, servers):
-    
-    _sum_hit = []
-    _sum_miss = []
+
+    miss_first = []
+    miss_current = []
 
     for server in servers:
-      stats = self.connect('stats', 'varnish', str(server[4]), str(server[2]), str(server[3]))
-      parse = json.loads(stats)
-      _sum_miss.append(parse['MAIN.cache_miss']['value'])
+      stats_first = self.connect('stats', 'varnish', str(server[4]), str(server[2]), str(server[3]))
+      parse_first = json.loads(stats_first)
+      miss_first.append(parse_first['MAIN.cache_miss']['value'])
 
-    return sum(_sum_miss)
+      sleep(1)
+    
+      stats_current = self.connect('stats', 'varnish', str(server[4]), str(server[2]), str(server[3]))
+      parse_current = json.loads(stats_current)
+      miss_current.append(parse_current['MAIN.cache_miss']['value'])
+    
+    _sum_miss = sum(miss_current) - sum(miss_first)
+
+    return _sum_miss
 
   def health(self, servers):
     
-    _sum_hit = []
-    _sum_miss = []
+    hit_first = []
+    miss_first = []
+    hit_current = []
+    miss_current = []
 
     for server in servers:
-      stats = self.connect('stats', 'varnish', str(server[4]), str(server[2]), str(server[3]))
-      parse = json.loads(stats)
-      _sum_hit.append(parse['MAIN.cache_hit']['value'])
-      _sum_miss.append(parse['MAIN.cache_miss']['value'])
+      stats_first = self.connect('stats', 'varnish', str(server[4]), str(server[2]), str(server[3]))
+      parse_first = json.loads(stats_first)
+      hit_first.append(parse_first['MAIN.cache_hit']['value'])
+      miss_first.append(parse_first['MAIN.cache_miss']['value'])
 
-    result = 100 * sum(_sum_hit) / (sum(_sum_hit) + sum(_sum_miss))
+      sleep(1)
+
+      stats_current = self.connect('stats', 'varnish', str(server[4]), str(server[2]), str(server[3]))
+      parse_current = json.loads(stats_current)
+      hit_current.append(parse_current['MAIN.cache_hit']['value'])
+      miss_current.append(parse_current['MAIN.cache_miss']['value'])
+
+      _sum_hit = sum(hit_current) - sum(hit_first)
+      
+      _sum_miss = sum(miss_current) - sum(miss_first)
+    
+    result = 100 * _sum_hit / (_sum_hit + _sum_miss)
+    
     return str(result)
 
   def only_hit_or_miss(self, option, servers):
@@ -63,13 +92,23 @@ class Varnish:
 
     t = time() * 1000
     
-    _sum_client_req = []
+    client_req_first = []
+    client_req_current = []
 
     for server in servers:
-      stats = self.connect('stats', 'varnish', str(server[4]), str(server[2]), str(server[3]))
-      parse = json.loads(stats)
-      _sum_client_req.append(parse['MAIN.client_req']['value'])
+      stats_first = self.connect('stats', 'varnish', str(server[4]), str(server[2]), str(server[3]))
+      parse_first = json.loads(stats_first)
+      client_req_first.append(parse_first['MAIN.client_req']['value'])
 
-    data = [t, sum(_sum_client_req)]
+      sleep(1)
+    
+      stats_current = self.connect('stats', 'varnish', str(server[4]), str(server[2]), str(server[3]))
+      parse_current = json.loads(stats_current)
+      client_req_current.append(parse_current['MAIN.client_req']['value'])
+    
+    _sum_client_req = sum(client_req_current) - sum(client_req_first)
+
+
+    data = [t, _sum_client_req]
     return json.dumps(data)
 
