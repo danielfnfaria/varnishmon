@@ -35,7 +35,7 @@ def create_app():
   varnish = Varnish()
 
   # remove this please
-  core = Core('192.168.99.100', 'varnishmon', 'root', 'docker')
+  core = Core('172.17.0.3', 'varnishmon', 'root', 'docker')
 
   # function for make response to charts
   def makeResponse(r):
