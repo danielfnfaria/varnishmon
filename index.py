@@ -35,7 +35,7 @@ def create_app():
   varnish = Varnish()
 
   # remove this please
-  core = Core('172.17.0.3', 'varnishmon', 'root', 'docker')
+  core = Core('192.168.99.100', 'varnishmon', 'root', '123.')
 
   # function for make response to charts
   def makeResponse(r):
@@ -91,6 +91,11 @@ def create_app():
   def list_server():
     response = core.listServer()
     return render_template('listServer.html', servers=response)
+
+
+  @app.route('/registered')
+  def registered():
+    return render_template('registeRed.html')
 
   #
   # response for charts data

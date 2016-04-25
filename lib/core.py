@@ -1,5 +1,6 @@
 import MySQLdb
 import json
+from flask import Flask, redirect
 
 class Core:
   
@@ -19,7 +20,7 @@ class Core:
     c.execute('insert into groups (name) values (%s)', [name])
     conn.commit()
     c.close()
-    return 'Group' + name + ' registered!'
+    return redirect('registered') 
 
   def listGroup(self):
     conn = self.connect()
@@ -41,7 +42,7 @@ class Core:
     c.execute('insert into servers (name, ip, port, password, group_id) values (%s, %s, %s, %s, %s)', [name, ip, port, password, group])
     conn.commit()
     c.close()
-    return 'Server' + name + ' registered!'
+    return redirect('registered') 
 
 
   def listServer(self, group_id = None):

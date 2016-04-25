@@ -22,8 +22,6 @@ class Varnish:
       parse_first = json.loads(stats_first, strict=False)
       hit_first.append(parse_first['MAIN.cache_hit']['value'])
 
-      sleep(1)
-    
       stats_current = self.connect('stats', 'varnish', str(server[4]), str(server[2]), str(server[3]))
       parse_current = json.loads(stats_current, strict=False)
       hit_current.append(parse_current['MAIN.cache_hit']['value'])
@@ -41,8 +39,6 @@ class Varnish:
       stats_first = self.connect('stats', 'varnish', str(server[4]), str(server[2]), str(server[3]))
       parse_first = json.loads(stats_first, strict=False)
       miss_first.append(parse_first['MAIN.cache_miss']['value'])
-
-      sleep(1)
     
       stats_current = self.connect('stats', 'varnish', str(server[4]), str(server[2]), str(server[3]))
       parse_current = json.loads(stats_current, strict=False)
@@ -64,8 +60,6 @@ class Varnish:
       parse_first = json.loads(stats_first, strict=False)
       hit_first.append(parse_first['MAIN.cache_hit']['value'])
       miss_first.append(parse_first['MAIN.cache_miss']['value'])
-
-      sleep(1)
 
       stats_current = self.connect('stats', 'varnish', str(server[4]), str(server[2]), str(server[3]))
       parse_current = json.loads(stats_current, strict=False)
@@ -100,8 +94,6 @@ class Varnish:
       parse_first = json.loads(stats_first, strict=False)
       client_req_first.append(parse_first['MAIN.client_req']['value'])
 
-      sleep(1)
-    
       stats_current = self.connect('stats', 'varnish', str(server[4]), str(server[2]), str(server[3]))
       parse_current = json.loads(stats_current, strict=False)
       client_req_current.append(parse_current['MAIN.client_req']['value'])
